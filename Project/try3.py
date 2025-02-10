@@ -33,7 +33,10 @@ def check_plagiarism(input_text):
     try:
         response = model.generate_content(prompt)
         
-        if response and hasattr(response, 'text'):
+        # Extract AI response properly
+        if response and hasattr(response, 'candidates'):
+            return response.candidates[0]['text'].strip()
+        elif hasattr(response, 'text'):
             return response.text.strip()
         else:
             return "No response generated."
@@ -52,8 +55,21 @@ def compute_similarity(original, generated):
     
     return similarity[0][0] * 100  # Convert to percentage
 
-# Submit Button
-if st.button("🔎 Check Plagiarism", use_container_width=True):
+# Buttons Layout
+col1, col2 = st.columns(2)
+
+with col1:
+    check_button = st.button("🔎 Check Plagiarism", use_container_width=True)
+
+with col2:
+    clear_button = st.button("❌ Clear Text", use_container_width=True)
+
+# Clear Button Functionality
+if clear_button:
+    text_to_check = ""  # Reset text area
+
+# Check Plagiarism Action
+if check_button:
     if not api_key:
         st.warning("⚠️ Please enter your API key to proceed.")
     elif not text_to_check.strip():
@@ -83,15 +99,15 @@ if st.button("🔎 Check Plagiarism", use_container_width=True):
             else:
                 st.success("✅ **No significant plagiarism detected!**")
 
-# Hide Streamlit Branding
+# Hide Streamlit Branding & Improve UI
 hide_st_style = """
 <style>
 #MainMenu {visibility:hidden;}
 footer {visibility:hidden;}
 header {visibility:hidden;}
-.stTextArea textarea {font-size: 16px; padding: 10px;}
+.stTextArea textarea {font-size: 18px; padding: 12px;}
 .stMetric {text-align: center;}
-.stButton>button {border-radius: 10px; font-size: 16px; background-color: #4CAF50; color: white;}
+.stButton>button {border-radius: 8px; font-size: 16px; background-color: #4CAF50; color: white;}
 </style>
 """
 st.markdown(hide_st_style, unsafe_allow_html=True)
