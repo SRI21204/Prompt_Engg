@@ -15,7 +15,7 @@ with st.sidebar:
 
 if api_key:
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-pro')
+    model = genai.GenerativeModel('gemini-2.0-flash')
 else:
     st.warning("⚠️ Please enter your API key to proceed.")
 
@@ -43,7 +43,7 @@ def compute_similarity(original, generated):
     similarity = cosine_similarity(tfidf_matrix[0], tfidf_matrix[1])
     return similarity[0][0] * 100
 
-text_to_check = st.text_area("\ud83d\udccc **Paste Your Text Below:**", value=st.session_state["text_input"], height=200, 
+text_to_check = st.text_area("\U0001F4CC **Paste Your Text Below:**", value=st.session_state["text_input"], height=200, 
                              placeholder="Enter your text here...", key="text_input")
 
 col1, col2, col3 = st.columns(3)
