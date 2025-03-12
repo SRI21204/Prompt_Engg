@@ -48,7 +48,7 @@ text_to_check = st.text_area("\U0001F4CC **Paste Your Text Below:**", value=st.s
 
 col1, col2, col3 = st.columns(3)
 
-if col3.button("🚓 Stop", use_container_width=True):
+if col3.button("🛑 Stop", use_container_width=True):
     st.warning("Process stopped!")
 
 if col2.button("❌ Clear Text", use_container_width=True):
